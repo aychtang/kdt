@@ -1,5 +1,6 @@
 var dist    = require("euclidean-distance");
-var isEqual = require('array-equal')
+var btree   = require("btree-helpers");
+var isEqual = require('array-equal');
 
 // Types:
 // P = Array<number>
@@ -7,11 +8,6 @@ var isEqual = require('array-equal')
 //       right    : N;
 //       location : P;
 //     }
-
-// <N> (n : N) : boolean
-var isLeaf = function (n) {
-  return !n.left && !n.right;
-};
 
 // <P, N> (loc : P, l : N, r : N) : N
 var make = function (loc, l, r) {
@@ -46,15 +42,13 @@ var kdtree = function (ls, depth, k) {
 //        , d : number )  - Current depth
 //        : N
 var locate = function (t, p, k, d) {
-  if (isEqual(t.location, p)) return t;
-  if (isLeaf(t))              return null;
+  if (isEqual(t.location, p))     return t;
+  if (btree.isLeaf(t))            return null;
 
   var axis = d % k;
 
-  if (p[axis] < t.location[axis])
-    return locate(t.left  , p, k, d + 1);
-  else
-    return locate(t.right , p, k, d + 1);
+  if (p[axis] < t.location[axis]) return locate(t.left , p, k, d + 1);
+  else                            return locate(t.right, p, k, d + 1);
 };
 
 exports.locate   = locate;
