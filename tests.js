@@ -12,3 +12,13 @@ test("Basic 2d pointlist usecase", function (t) {
 
   t.end();
 });
+
+test("Locate(t, p, k, d)", function (t) {
+  var points = [[1,2], [3,4], [5,6], [7,8]];
+  var kdt    = KDTree.makeTree(points, 0, 2);
+
+  t.deepEqual(kdt.left.location      , points[1]);
+  t.deepEqual(KDTree.locate(kdt, points[1], 2, 0), kdt.left);
+
+  t.end();
+});

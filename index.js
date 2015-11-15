@@ -1,9 +1,27 @@
+var d = require("euclidean-distance");
+
 // Types:
 // P = Array<number>
 // N = { left     : N;
 //       right    : N;
 //       location : P;
 //     }
+
+// <P> (a : P, b : P) : boolean
+var isEqual = function (a, b) {
+  if (a === b) return true;
+  if (a == null || b == null || a.length !== b.length) return false;
+
+  for (var i = 0; i < a.length; i++)
+    if (a[i] !== b[i]) return false;
+
+  return true;
+};
+
+// <N> (n : N) : boolean
+var isLeaf = function (n) {
+  return !n.left && !n.right;
+};
 
 // <P, N> (loc : P, l : N, r : N) : N
 var make = function (loc, l, r) {
@@ -32,5 +50,22 @@ var kdtree = function (ls, depth, k) {
              );
 };
 
+// <N> ( t : N
+//     , n : N
+//     , k : number
+//     , d : number )
+//     : N
+var locate = function (t, n, k, d) {
+  if (isEqual(t.location, n)) return t;
+  if (isLeaf(t))              return null;
 
+  var axis = d % k;
+
+  if (n[axis] < t.location[axis])
+    return locate(t.left  , n, k, d + 1);
+  else
+    return locate(t.right , n, k, d + 1);
+};
+
+exports.locate   = locate;
 exports.makeTree = kdtree;
