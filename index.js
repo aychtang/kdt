@@ -50,12 +50,12 @@ var kdtree = function (ls, depth, k) {
              );
 };
 
-// <N> ( t : N
-//     , n : N
-//     , k : number
-//     , d : number )
-//     : N
-var locate = function (t, n, k, d) {
+// <N, P> ( t : N
+//        , p : P
+//        , k : number    - Number of dimensions
+//        , d : number )  - Current depth
+//        : N
+var locate = function (t, p, k, d) {
   if (isEqual(t.location, n)) return t;
   if (isLeaf(t))              return null;
 
