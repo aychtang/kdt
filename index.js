@@ -1,22 +1,26 @@
+// Types:
+// P = Array<number>
+// N = { left     : N;
+//       right    : N;
+//       location : P;
+//     }
 
 // <P, N> (loc : P, l : N, r : N) : N
-var make = function (loc, l, r) 
-{
+var make = function (loc, l, r) {
   return { left     : l
          , right    : r
          , location : loc
          };
 };
 
-// <P, N> ( ls    : Array<P>
-//        , depth : number
-//        , k?    : number )
+// <P, N> ( ls     : Array<P>
+//        , depth  : number
+//        , k      : number )
 //        : N
-var kdtree = function (ls, depth, k)
-{
+var kdtree = function (ls, depth, k) {
   if (!ls.length) return null;
 
-  var axis = depth % (k || 2); // depth mod k (default : 2).
+  var axis = depth % k;
 
   ls.sort(function (a, b) { return a[axis] - b[axis]; });
 
@@ -27,5 +31,6 @@ var kdtree = function (ls, depth, k)
              , kdtree(ls.slice(middle + 1, ls.length), depth + 1, k)
              );
 };
+
 
 exports.makeTree = kdtree;
