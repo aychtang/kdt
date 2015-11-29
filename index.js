@@ -51,5 +51,34 @@ var locate = function (t, p, k, d) {
   else                            return locate(t.right, p, k, d + 1);
 };
 
-exports.locate   = locate;
-exports.makeTree = kdtree;
+// <N, P> (t : N, p : P, k : number)
+var nearestNeighbour = function (t, p, k) {
+  var guess    = null;
+  var bestDist = Infinity;
+
+  function search (t, p, k, d)
+  {
+    if (t == null) return guess;
+
+    var axis = d % k;
+
+    if (guess) {
+      var distance = dist(t.location, guess.location);
+      if (distance < bestDist) {
+        guess    = t;
+        bestDist = distance;
+      }
+    } else {
+      guess = t;
+    }
+
+    if (p[axis] < t.location[axis]) return search(t.left , p, k, d + 1);
+    else                            return search(t.right, p, k, d + 1);
+  }
+
+  return search(t, p, k, 0);
+};
+
+exports.locate           = locate;
+exports.makeTree         = kdtree;
+exports.nearestNeighbour = nearestNeighbour;
