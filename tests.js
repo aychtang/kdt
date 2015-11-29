@@ -29,6 +29,7 @@ test("NearestNeighbour(t, p, k)", function (t) {
   var kdt    = KDTree.makeTree(points, 0, 2);
 
   t.deepEqual(KDTree.nearestNeighbour(kdt, points[0], 2).location, points[1]);
+  t.deepEqual(KDTree.nearestNeighbour(kdt, points[3], 2).location, points[2]);
 
   t.end();
 });

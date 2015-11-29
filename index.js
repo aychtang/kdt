@@ -62,14 +62,12 @@ var nearestNeighbour = function (t, p, k) {
 
     var axis = d % k;
 
-    if (guess) {
-      var distance = dist(t.location, guess.location);
-      if (distance < bestDist) {
-        guess    = t;
-        bestDist = distance;
-      }
-    } else {
-      guess = t;
+    if (!guess) guess = t;
+
+    var distance = dist(t.location, guess.location);
+    if (dist(t.location, p) && distance && distance < bestDist) {
+      guess    = t;
+      bestDist = distance;
     }
 
     if (p[axis] < t.location[axis]) return search(t.left , p, k, d + 1);
